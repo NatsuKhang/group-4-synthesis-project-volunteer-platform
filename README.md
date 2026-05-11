@@ -17,9 +17,10 @@ A comprehensive platform designed to streamline volunteer management for charity
 ## 🏗️ Architecture
 
 This project follows a **design-first, tech-agnostic** approach with:
-- **Backend**: FastAPI (Python) with PostgreSQL database
+- **Backend**: FastAPI (Python) with PostgreSQL database (hosted on NeonDB)
 - **Frontend**: React + Vite with Tailwind CSS
-- **Deployment**: Docker containerization
+- **Deployment**: Docker containerization with AWS ECR/EC2
+- **CI/CD**: GitHub Actions for automated deployment
 
 ## 🚀 Quick Start
 
@@ -45,6 +46,29 @@ This project follows a **design-first, tech-agnostic** approach with:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
+
+### Production Deployment
+
+**Note**: The production deployment to AWS is currently paused due to the expiration of free tier credits (student account limitations).
+
+The application is automatically deployed to AWS EC2 when code is pushed to the `main` branch via GitHub Actions:
+
+#### AWS Infrastructure Setup
+- **Container Registry**: Amazon ECR for storing Docker images
+- **Compute**: Amazon EC2 instance running the application
+- **Database**: NeonDB (serverless PostgreSQL)
+- **CI/CD**: GitHub Actions workflow (`.github/workflows/deploy.yml`)
+
+#### Deployment Process
+1. **Build**: GitHub Actions builds Docker images for backend and frontend
+2. **Push**: Images are pushed to Amazon ECR repositories
+3. **Deploy**: SSH connection to EC2 pulls new images and restarts services
+4. **Cleanup**: Old Docker images are pruned to save space
+
+#### Production URLs (When Active)
+- Frontend: `http://<EC2_PUBLIC_IP>:5173`
+- Backend API: `http://<EC2_PUBLIC_IP>:8000`
+- API Documentation: `http://<EC2_PUBLIC_IP>:8000/docs`
 
 ### Local Development Setup
 
