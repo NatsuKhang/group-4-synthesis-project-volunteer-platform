@@ -1,77 +1,160 @@
-# Volunteer & Charity Platform (Design-first, Tech-agnostic)
+# Volunteer & Charity Platform 🌟
 
-> Anonymous group per course rule: members referenced only by aliases **XA, XB, XC, XD, XE**.
+> **Anonymous group per course rule**: members referenced only by aliases **XA, XB, XC, XD, XE**.
 
-## Overview
-A platform to create campaigns/shifts, recruit/approve volunteers, **QR-based attendance**, and summarize volunteer hours. This repository focuses on **requirements & system design** first; technology choices will be recorded via ADRs.
+![Project Overview](project2.png)
 
-## Scope (MVP)
-- Auth & Roles (Organizer, Volunteer)
-- Campaign/Shift management
-- Apply/Approve flow + notifications
-- QR check-in/out + hour computation
-- Dashboard & CSV export
+A comprehensive platform designed to streamline volunteer management for charity organizations. Create campaigns, recruit volunteers, track attendance with QR codes, and generate insightful reports—all in one user-friendly system.
 
-See `/docs/proposal` and `/docs/requirements`.
+## ✨ Features
 
-## Repository Rules (5 members)
-- **Aliases only** (no real names): XA (PM/BA), XB (Backend lead), XC (Frontend lead), XD (QA/DevOps), **XE (UX/UI)**.
-- **Weekly commits:** each member ≥1 update/week. Tag weekly releases: `v0.<week>`.
-- **Branching:** `main` (protected) + short-lived feature branches `feat/...`, `fix/...`, `docs/...`.
-- **Conventional Commits:** `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
-- **PR Reviews:** at least 1 reviewer; CODEOWNERS auto-assigns.
+- **🔐 Authentication & Roles**: Secure login for Organizers and Volunteers
+- **📅 Campaign Management**: Create and manage volunteer shifts and events
+- **👥 Volunteer Recruitment**: Application and approval workflow with notifications
+- **📱 QR-Based Attendance**: Seamless check-in/out with automatic hour computation
+- **📊 Dashboard & Analytics**: Comprehensive reporting and CSV export capabilities
 
-## How to Use this Repo
-1. Fill `/docs/proposal/*` following anonymity rules.
-2. Capture requirements in `/docs/requirements`.
-3. Draft design diagrams in `/docs/design` (keep both REST & GraphQL stubs until ADR 0002).
-4. Record decisions in `/docs/adr`.
-5. Plan tests in `/docs/qa`, deployment in `/docs/ops`.
+## 🏗️ Architecture
 
-## Roadmap
-See [`/ROADMAP.md`](./ROADMAP.md) for week-by-week deliverables.
+This project follows a **design-first, tech-agnostic** approach with:
+- **Backend**: FastAPI (Python) with PostgreSQL database
+- **Frontend**: React + Vite with Tailwind CSS
+- **Deployment**: Docker containerization
 
-## Security & Privacy
-See [`/docs/security`](./docs/security) and [`/SECURITY.md`](./SECURITY.md).
+## 🚀 Quick Start
 
-## Running the backend (development)
+### Prerequisites
+- Docker & Docker Compose
+- Python 3.8+ (for local development)
+- Node.js 16+ (for local development)
 
-This repository includes a minimal FastAPI-based backend under the `backend/` folder. To run it locally:
+### Using Docker (Recommended)
 
-1. Create and activate a Python virtual environment (recommended):
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd group-4-synthesis-project-volunteer-platform
+   ```
 
-	- On Windows (PowerShell):
-	  ```powershell
-	  python -m venv .venv
-	  .\.venv\Scripts\Activate.ps1
-	  ```
+2. **Start the application**
+   ```bash
+   docker compose up --build
+   ```
 
-2. Install dependencies (from `backend/requirements.txt`):
+3. **Access the application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
 
-	```powershell
-	pip install -r backend/requirements.txt
-	```
+### Local Development Setup
 
-3. Ensure you have a `.env` file at the repository root (or set environment variables) with the database credentials used by `backend/main.py`:
+#### Backend Setup
+1. **Navigate to backend directory**
+   ```bash
+   cd backend
+   ```
 
-	Example `.env`:
+2. **Create virtual environment**
+   ```bash
+   # Windows
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
 
-	```text
-	DATABASE_USER=your_user
-	DATABASE_PASSWORD=your_password
-	DATABASE_HOST=localhost
-	DATABASE_NAME=your_db
-	```
+   # macOS/Linux
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
 
-4. Run the backend with uvicorn on port 8000:
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-	```powershell
-	# from repository root
-	uvicorn backend.main:app --host 0.0.0.0 --reload
-	```
+4. **Configure environment**
+   Create a `.env` file in the repository root:
+   ```env
+   DATABASE_USER=your_user
+   DATABASE_PASSWORD=your_password
+   DATABASE_HOST=localhost
+   DATABASE_NAME=your_db
+   ```
 
-5. Open http://localhost:8000/docs to see the interactive OpenAPI UI.
+5. **Run the backend**
+   ```bash
+   # From repository root
+   uvicorn backend.main:app --host 0.0.0.0 --reload
+   ```
 
-Notes:
-- In development you can use `psycopg2-binary` (included) or `psycopg` / connection pool for production.
-- If you don't want to connect to a real DB while developing endpoints, edit `backend/backend.py` to mock the DB connection or provide a fallback mode.
+#### Frontend Setup
+1. **Navigate to frontend directory**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+## 📁 Project Structure
+
+```
+├── backend/                 # FastAPI backend
+│   ├── main.py             # Application entry point
+│   ├── requirements.txt    # Python dependencies
+│   ├── Dockerfile          # Backend container config
+│   ├── models/             # Database models
+│   ├── routes/             # API endpoints
+│   ├── controllers/        # Business logic
+│   └── tests/              # Backend tests
+├── frontend/               # React frontend
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Page components
+│   │   ├── context/        # React context providers
+│   │   └── api/            # API client
+│   ├── package.json        # Node dependencies
+│   └── Dockerfile          # Frontend container config
+├── docker-compose.yaml     # Multi-container setup
+└── README.md              # This file
+```
+
+## 🧪 Testing
+
+### Backend Tests
+```bash
+cd backend
+pytest
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm run lint
+```
+
+## 📋 Development Guidelines
+
+### Repository Rules (5 members)
+- **Aliases only** (no real names): XA (PM/BA), XB (Backend lead), XC (Frontend lead), XD (QA/DevOps), **XE (UX/UI)**
+- **Weekly commits**: each member ≥1 update/week
+- **Branching**: `main` (protected) + short-lived feature branches (`feat/...`, `fix/...`, `docs/...`)
+- **Conventional Commits**: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`
+- **PR Reviews**: at least 1 reviewer; CODEOWNERS auto-assigns
+
+## 📋 Documentation & Reports
+
+For detailed information about development processes, results, and final reports, please refer to [`Final reports.pdf`](./Final%20reports.pdf).
+
+##  License
+
+This project is licensed under the terms specified in [`LICENSE`](./LICENSE).
+
+## 🙏 Acknowledgments
+
+Built with ❤️ by the anonymous development team: XA, XB, XC, XD, XE
